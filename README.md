@@ -1,6 +1,8 @@
 # wow-shim
 
-LuaLS annotation shim for the World of Warcraft API. Fills the gaps in
+LuaLS annotation shim for the World of Warcraft API, plus a GitHub Action
+that runs `lua-language-server --check` against the full annotation set.
+The shim fills the gaps in
 [Ketho/vscode-wow-api](https://github.com/Ketho/vscode-wow-api) and
 [NumyAddon/FramexmlAnnotations](https://github.com/NumyAddon/FramexmlAnnotations),
 both of which track retail.
@@ -24,6 +26,33 @@ git clone https://github.com/AvyAddons/wow-shim ~/.local/share/wow-shim
   "~/.local/share/wow-framexml/Annotations",
   "~/.local/share/wow-shim"
 ]
+```
+
+## In CI
+
+The action clones the annotation corpora to the same `~/.local/share` paths,
+links this repo in as the shim, installs the tools from the caller's
+`mise.toml`, and runs its `lint` task. `setup.sh` is the same script, runnable
+by hand for a fresh machine.
+
+```yaml
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: AvyAddons/wow-shim@main
+```
+
+The caller's `mise.toml` is the single source of truth for the LuaLS version
+and the check command:
+
+```toml
+[tools]
+"lua-language-server" = "latest"
+
+[tasks.lint]
+run = "lua-language-server --check . --checklevel=Warning --check_format=pretty"
 ```
 
 ## Adding an entry
