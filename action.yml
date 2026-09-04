@@ -1,18 +1,14 @@
 name: WoW LuaLS check
 description: Runs the caller's mise lint task against the WoW API annotations
-inputs:
-  task:
-    description: mise task to run after the annotations are in place
-    default: lint
 runs:
   using: composite
   steps:
     - name: Fetch annotation corpora
       shell: bash
-      run: ${{ github.action_path }}/setup.sh
+      run: '"$GITHUB_ACTION_PATH/setup.sh"'
       env:
         SHIM_PATH: ${{ github.action_path }}
     - uses: jdx/mise-action@v4
     - name: Lint
       shell: bash
-      run: mise run ${{ inputs.task }}
+      run: mise run lint
