@@ -8,7 +8,7 @@ runs:
       run: '"$GITHUB_ACTION_PATH/setup.sh"'
       env:
         SHIM_PATH: ${{ github.action_path }}
-    - uses: jdx/mise-action@v4
+    - uses: jdx/mise-action@6612f0ef07ed2a736cd1e00a94a065522dd41195 # v5.2.5
     - name: Lint
       shell: bash
       run: mise run lint
